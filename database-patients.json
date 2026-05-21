@@ -1,0 +1,14 @@
+{
+  "name": "pearly-patients",
+  "description": "Pearly Patient records",
+  "columns": [
+    { "name": "practiceId", "type": "string" },
+    { "name": "firstName", "type": "string" },
+    { "name": "lastName", "type": "string" },
+    { "name": "email", "type": "string" },
+    { "name": "phone", "type": "string" },
+    { "name": "dob", "type": "string" }
+  ],
+  "publicWrites": true,
+  "publicReads": true
+}

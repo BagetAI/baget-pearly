@@ -1,0 +1,115 @@
+// This is a standard Prisma schema for the Pearly Dental SaaS.
+// It handles the core entities: Patients, Appointments, SMS Logs, and Insurance Authorizations.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Practice {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  chairs    Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  patients     Patient[]
+  appointments Appointment[]
+}
+
+model Patient {
+  id         String   @id @default(cuid())
+  practiceId String
+  firstName  String
+  lastName   String
+  email      String?
+  phone      String
+  dob        DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  practice     Practice      @relation(fields: [practiceId], references: [id])
+  appointments Appointment[]
+  smsLogs      SmsLog[]
+
+  @@index([practiceId])
+}
+
+model Appointment {
+  id         String            @id @default(cuid())
+  practiceId String
+  patientId  String
+  chairId    Int
+  startTime  DateTime
+  endTime    DateTime
+  status     AppointmentStatus @default(BOOKED)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  practice      Practice                @relation(fields: [practiceId], references: [id])
+  patient       Patient                 @relation(fields: [patientId], references: [id])
+  authorization InsuranceAuthorization?
+
+  @@index([practiceId])
+  @@index([patientId])
+}
+
+enum AppointmentStatus {
+  BOOKED
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NOSHOW
+}
+
+model InsuranceAuthorization {
+  id            String              @id @default(cuid())
+  appointmentId String              @unique
+  status        AuthorizationStatus @default(PENDING)
+  procedureCode String
+  payerId       String
+  requestDate   DateTime            @default(now())
+  responseDate  DateTime?
+  notes         String?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id])
+}
+
+enum AuthorizationStatus {
+  PENDING
+  APPROVED
+  DENIED
+  MORE_INFO_REQUIRED
+}
+
+model SmsLog {
+  id        String       @id @default(cuid())
+  patientId String
+  direction SmsDirection
+  content   String
+  status    SmsStatus    @default(SENT)
+  timestamp DateTime     @default(now())
+
+  patient Patient @relation(fields: [patientId], references: [id])
+
+  @@index([patientId])
+}
+
+enum SmsDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum SmsStatus {
+  SENT
+  DELIVERED
+  FAILED
+  RECEIVED
+}

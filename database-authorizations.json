@@ -1,0 +1,13 @@
+{
+  "name": "pearly-authorizations",
+  "description": "Pearly Insurance Pre-Authorization Tracking",
+  "columns": [
+    { "name": "appointmentId", "type": "string" },
+    { "name": "procedureCode", "type": "string" },
+    { "name": "payerId", "type": "string" },
+    { "name": "status", "type": "string" },
+    { "name": "notes", "type": "string" }
+  ],
+  "publicWrites": true,
+  "publicReads": true
+}
