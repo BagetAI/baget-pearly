@@ -26,6 +26,12 @@ export async function POST(request: Request) {
       },
     });
 
+    // Update the Appointment's pre_auth_status to reflect the pending request
+    await prisma.appointment.update({
+      where: { id: appointmentId },
+      data: { preAuthStatus: 'PENDING' }
+    });
+
     return NextResponse.json({ data: authorization }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -34,7 +40,7 @@ export async function POST(request: Request) {
 
 /**
  * @api {patch} /api/authorizations Update Status
- * @apiDescription Updates authorization status (e.g., when FHIR webhook triggers).
+ * @apiDescription Updates authorization status manually or via trigger.
  */
 export async function PATCH(request: Request) {
   try {
@@ -51,6 +57,11 @@ export async function PATCH(request: Request) {
         status,
         notes,
         responseDate: ['APPROVED', 'DENIED'].includes(status) ? new Date() : undefined,
+        appointment: {
+          update: {
+            preAuthStatus: status
+          }
+        }
       },
     });
 
