@@ -1,0 +1,12 @@
+{
+  "name": "waitlist-signups",
+  "description": "Beta waitlist for Pearly dental SaaS",
+  "columns": [
+    { "name": "practiceName", "type": "string" },
+    { "name": "chairs", "type": "string" },
+    { "name": "email", "type": "string" },
+    { "name": "software", "type": "string" }
+  ],
+  "publicWrites": true,
+  "publicReads": false
+}

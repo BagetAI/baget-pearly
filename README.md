@@ -1,2 +1,2 @@
-# baget-pearly
-Pearly - Retro Analog Landing Page for Dental SaaS Beta (Fixed Dependencies)
+# pearly-landing
+Next.js landing page for Pearly dental SaaS.
