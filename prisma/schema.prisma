@@ -8,47 +8,61 @@ datasource db {
 }
 
 model Practice {
-  id        String    @id @default(cuid())
-  name      String
-  patients  Patient[]
-  createdAt DateTime  @default(now())
+  id          String   @id @default(cuid())
+  name        String
+  chairsCount Int      @default(4) @map("chairs_count")
+  patients    Patient[]
+  slots       PracticeSlot[]
+  createdAt   DateTime @default(now())
 }
 
 model Patient {
-  id           String        @id @default(cuid())
-  firstName    String
-  lastName     String
-  email        String?
-  phone        String
-  dob          DateTime?
-  practiceId   String
-  practice     Practice      @relation(fields: [practiceId], references: [id])
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String?
+  phone       String
+  dob         DateTime?
+  practiceId  String
+  practice    Practice @relation(fields: [practiceId], references: [id])
   appointments Appointment[]
-  createdAt    DateTime      @default(now())
+  createdAt   DateTime @default(now())
 }
 
 model Appointment {
-  id              String                 @id @default(cuid())
-  startTime       DateTime
-  chairId         String
-  status          String                 @default("BOOKED")
-  patientId       String
-  patient         Patient                @relation(fields: [patientId], references: [id])
-  authorizations  InsuranceAuthorization[]
-  preAuthStatus   String                 @default("NONE")   @map("pre_auth_status")
-  createdAt       DateTime               @default(now())
+  id          String   @id @default(cuid())
+  startTime   DateTime
+  endTime     DateTime
+  chairId     String?  // References "1", "2", "3", or "4"
+  status      String   @default("BOOKED")
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  authorizations InsuranceAuthorization[]
+  preAuthStatus String @default("NONE") @map("pre_auth_status")
+  createdAt   DateTime @default(now())
+}
+
+model PracticeSlot {
+  id          String   @id @default(cuid())
+  practiceId  String   @map("practice_id")
+  practice    Practice @relation(fields: [practiceId], references: [id])
+  dayOfWeek   Int      // 0 (Sunday) to 6 (Saturday)
+  startTime   String   // "08:00"
+  endTime     String   // "17:00"
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now())
 }
 
 model InsuranceAuthorization {
-  id              String      @id @default(cuid())
-  appointmentId   String      @unique
-  appointment     Appointment @relation(fields: [appointmentId], references: [id])
-  procedureCode   String
-  payerId         String
-  status          String      @default("PENDING")
-  notes           String?
-  responseDate    DateTime?
-  createdAt       DateTime    @default(now())
+  id            String   @id @default(cuid())
+  appointmentId String   @unique
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  procedureCode String
+  payerId       String
+  status        String   @default("PENDING")
+  notes         String?
+  responseDate  DateTime?
+  createdAt     DateTime @default(now())
 }
 
 model SmsLog {
