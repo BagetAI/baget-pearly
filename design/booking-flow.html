@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pearly Patient Booking UI - Design Artifact</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #F4ECD8;
+            --burgundy: #6B2D3E;
+            --navy: #2C3E50;
+            --mint: #D1E7E0;
+            --charcoal: #334155;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --paper-texture: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #E5DCC5;
+            font-family: 'Lato', sans-serif;
+            color: var(--navy);
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Libre Baskerville', serif;
+            font-weight: 700;
+        }
+
+        .design-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .screen-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .screen-label {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.2rem;
+            color: var(--burgundy);
+        }
+
+        /* Phone Frame */
+        .phone {
+            width: 320px;
+            height: 640px;
+            background-color: var(--cream);
+            background-image: var(--paper-texture);
+            border: 8px solid var(--navy);
+            border-radius: 36px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .phone-content {
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            height: 24px;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* UI Elements */
+        .logo {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 24px;
+            color: var(--burgundy);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #D1CAB7;
+        }
+
+        .dot.active {
+            background-color: var(--burgundy);
+        }
+
+        .btn {
+            background-color: var(--burgundy);
+            color: var(--cream);
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+            margin-top: auto;
+            box-shadow: var(--shadow);
+            transition: transform 0.1s;
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+        }
+
+        .option-card {
+            background: var(--white);
+            border: 1px solid #D1CAB7;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-card:hover, .option-card.active {
+            border-color: var(--burgundy);
+            background-color: #FDFBFA;
+        }
+
+        .option-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .option-desc {
+            font-size: 13px;
+            color: var(--charcoal);
+            line-height: 1.4;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-top: 16px;
+        }
+
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+
+        .cal-day.active {
+            background-color: var(--burgundy);
+            color: var(--cream);
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .time-slot {
+            padding: 10px;
+            border: 1px solid #D1CAB7;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+            background: white;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #D1CAB7;
+            border-radius: 6px;
+            font-family: inherit;
+            background: white;
+        }
+
+        .insurance-upload {
+            border: 2px dashed #D1CAB7;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--charcoal);
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--mint);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 40px auto 24px;
+            color: #0D9488;
+            font-size: 32px;
+        }
+
+        @media (max-width: 600px) {
+            .design-board {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="margin-bottom: 40px; color: var(--navy);">Pearly Booking Flow UI</h1>
+
+    <div class="design-board">
+        
+        <!-- SCREEN 1: WELCOME -->
+        <div class="screen-container">
+            <span class="screen-label">1. Welcome</span>
+            <div class="phone">
+                <div class="status-bar"><span>9:41</span><span>••• 🔋</span></div>
+                <div class="phone-content">
+                    <div class="logo">pearly</div>
+                    <h2 style="font-size: 28px; line-height: 1.2; margin-bottom: 16px; text-align: center;">Book your next visit in 60 seconds.</h2>
+                    <p style="text-align: center; color: var(--charcoal); font-size: 15px; margin-bottom: 32px;">No phone tag. No waiting. Just a healthier smile on your schedule.</p>
+                    
+                    <div style="background: rgba(107, 45, 62, 0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(107, 45, 62, 0.1);">
+                        <p style="font-size: 13px; text-align: center; color: var(--burgundy);"><strong>Pearly Dental Practice</strong><br>123 Clinic Way, Austin TX</p>
+                    </div>
+
+                    <button class="btn">Start Booking</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: SERVICE -->
+        <div class="screen-container">
+            <span class="screen-label">2. Service</span>
+            <div class="phone">
+                <div class="status-bar"><span>9:42</span><span>••• 🔋</span></div>
+                <div class="phone-content">
+                    <div class="progress-dots">
+                        <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                    <h3 style="margin-bottom: 20px;">What can we help with?</h3>
+                    
+                    <div class="option-card active">
+                        <div class="option-title">Routine Cleaning</div>
+                        <div class="option-desc">Hygiene & exam for existing patients. (60 mins)</div>
+                    </div>
+                    
+                    <div class="option-card">
+                        <div class="option-title">New Patient Exam</div>
+                        <div class="option-desc">First-time visit including X-rays. (90 mins)</div>
+                    </div>
+
+                    <div class="option-card">
+                        <div class="option-title">Emergency / Pain</div>
+                        <div class="option-desc">Triage for toothaches or broken teeth. (30 mins)</div>
+                    </div>
+
+                    <button class="btn">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: CALENDAR -->
+        <div class="screen-container">
+            <span class="screen-label">3. Time</span>
+            <div class="phone">
+                <div class="status-bar"><span>9:43</span><span>••• 🔋</span></div>
+                <div class="phone-content">
+                    <div class="progress-dots">
+                        <div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                    <h3>Pick a date</h3>
+                    <div class="calendar-grid">
+                        <div class="cal-day" style="opacity: 0.3;">28</div><div class="cal-day" style="opacity: 0.3;">29</div><div class="cal-day" style="opacity: 0.3;">30</div><div class="cal-day" style="opacity: 0.3;">31</div><div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div>
+                        <div class="cal-day">4</div><div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day active">7</div><div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day">10</div>
+                    </div>
+                    
+                    <h3 style="margin-top: 24px;">Available times</h3>
+                    <div class="time-slots">
+                        <div class="time-slot" style="background: var(--mint); border-color: #0D9488;">8:30 AM</div>
+                        <div class="time-slot">9:45 AM</div>
+                        <div class="time-slot">1:15 PM</div>
+                        <div class="time-slot">3:00 PM</div>
+                    </div>
+
+                    <button class="btn">Confirm Time</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 4: INFO -->
+        <div class="screen-container">
+            <span class="screen-label">4. Details</span>
+            <div class="phone">
+                <div class="status-bar"><span>9:44</span><span>••• 🔋</span></div>
+                <div class="phone-content">
+                    <div class="progress-dots">
+                        <div class="dot"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div>
+                    </div>
+                    <h3>Your Information</h3>
+                    <div class="form-group" style="margin-top: 16px;">
+                        <label class="label">Full Name</label>
+                        <input type="text" class="input" placeholder="Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Insurance Provider</label>
+                        <select class="input">
+                            <option>Delta Dental</option>
+                            <option>Cigna</option>
+                            <option>MetLife</option>
+                            <option>Self-Pay</option>
+                        </select>
+                    </div>
+                    <div class="insurance-upload">
+                        <strong>Snap Insurance Card</strong><br>
+                        <span style="font-size: 11px;">Verification is automated & instant.</span>
+                    </div>
+
+                    <button class="btn">Finalize Booking</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 5: CONFIRMATION -->
+        <div class="screen-container">
+            <span class="screen-label">5. Success</span>
+            <div class="phone">
+                <div class="status-bar"><span>9:45</span><span>••• 🔋</span></div>
+                <div class="phone-content" style="text-align: center;">
+                    <div class="success-icon">✓</div>
+                    <h2 style="margin-bottom: 8px;">You're all set!</h2>
+                    <p style="font-size: 14px; color: var(--charcoal); margin-bottom: 24px;">Your appointment is confirmed for <strong>Tuesday, July 7th at 8:30 AM</strong>.</p>
+                    
+                    <div style="background: white; border: 1px solid #D1CAB7; border-radius: 8px; padding: 16px; text-align: left; margin-bottom: 24px;">
+                        <p style="font-size: 12px; color: #0D9488; font-weight: bold; margin-bottom: 4px;">INSURANCE VERIFIED</p>
+                        <p style="font-size: 13px;">Delta Dental (PPO) covers this visit 100%. Estimated co-pay: $0.00</p>
+                    </div>
+
+                    <button class="btn" style="background-color: var(--navy);">Add to Calendar</button>
+                    <p style="font-size: 12px; margin-top: 16px; color: var(--charcoal);">Need to change? Reply to our text.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
